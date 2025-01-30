@@ -1,5 +1,6 @@
 import React from 'react';
 import { LucideMenu, LucideMoon, LucideSun } from 'lucide-react';
+import Auth from './Auth';
 
 const Header = ({ isDarkMode, toggleDarkMode, toggleSidebar, isSidebarOpen }) => {
   return (
@@ -8,27 +9,33 @@ const Header = ({ isDarkMode, toggleDarkMode, toggleSidebar, isSidebarOpen }) =>
       role="banner"
     >
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <button 
-          onClick={toggleSidebar} 
-          className="p-2 rounded-md hover:bg-blue-600 dark:hover:bg-blue-800"
-          aria-label={`${isSidebarOpen ? 'Close' : 'Open'} navigation menu`}
-          aria-expanded={isSidebarOpen}
-          aria-controls="sidebar-menu"
-        >
-          <LucideMenu size={24} aria-hidden="true" />
-        </button>
-        <h1 className="text-2xl font-bold">Vents</h1>
-        <button
-          onClick={toggleDarkMode}
-          className="p-2 rounded-md hover:bg-purple-600 dark:hover:bg-purple-500"
-          aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
-          aria-pressed={isDarkMode}
-        >
-          {isDarkMode ? 
-            <LucideSun size={24} aria-hidden="true" /> : 
-            <LucideMoon size={24} aria-hidden="true" />
-          }
-        </button>
+        <div className="flex items-center">
+          <button 
+            onClick={toggleSidebar} 
+            className="p-2 rounded-md hover:bg-blue-600 dark:hover:bg-blue-800"
+            aria-label={`${isSidebarOpen ? 'Close' : 'Open'} navigation menu`}
+            aria-expanded={isSidebarOpen}
+            aria-controls="sidebar-menu"
+          >
+            <LucideMenu size={24} aria-hidden="true" />
+          </button>
+          <h1 className="text-2xl font-bold ml-4">Vents</h1>
+        </div>
+        
+        <div className="flex items-center space-x-4">
+          <Auth />
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 rounded-md hover:bg-purple-600 dark:hover:bg-purple-500"
+            aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
+            aria-pressed={isDarkMode}
+          >
+            {isDarkMode ? 
+              <LucideSun size={24} aria-hidden="true" /> : 
+              <LucideMoon size={24} aria-hidden="true" />
+            }
+          </button>
+        </div>
       </div>
     </header>
   );

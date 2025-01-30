@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
+import { supabase } from '../utils/supabase';
+import Auth from './components/Auth';
+import Callback from './components/Callback';
 import Home from './components/Home';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
+import Header from './components/Header'; 
+import Sidebar from './components/Sidebar'; 
 
 const App = () => {
+  const [user, setUser] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [events, setEvents] = useState([]);
-  
+
   useEffect(() => {
-    getEvents()
-    
+    const getUser = async () => {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (!error || error.message.includes('Auth session missing')) {
+        setUser(user);
+      }
+  
+      const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null);
+      });
+  
+      return () => {
+        authListener?.subscription?.unsubscribe();
+      };
+    };
+  
+    getUser();
   }, []);
-  
-  
-  async function getEvents() {
-    const { data, error } = await supabase.from("events").select("*");
-    if (error) {
-      console.error("Error fetching events:", error);
-      return;
-    }
-    setEvents(data);
-  }
-  
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
@@ -42,26 +41,14 @@ const App = () => {
 
   return (
     <Router>
-      <div 
-        className={`min-h-screen ${isDarkMode ? 'dark bg-gray-900 text-white' : 'bg-white text-gray-900'}`}
-      >
-        <Header 
-          isDarkMode={isDarkMode} 
-          toggleDarkMode={toggleDarkMode} 
-          toggleSidebar={toggleSidebar}
-          isSidebarOpen={isSidebarOpen}
-        />
+      <div className={`min-h-screen ${isDarkMode ? 'dark bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+        <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-        <main 
-          className={`transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}
-          id="main-content"
-          tabIndex="-1"
-        >
+        <main className={`transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`} id="main-content">
           <div className="container mx-auto px-4 py-8 pt-20">
             <Routes>
-              <Route path="/" element={<Home isDarkMode={isDarkMode} />} />
-              <Route path="/projects" element={<Projects events={events} />} />
-              <Route path="/contact" element={<Contact />} />
+              <Route path="/" element={user ? <Home /> : <Auth />} />
+              <Route path="/auth/callback" element={<Callback />} />
             </Routes>
           </div>
         </main>

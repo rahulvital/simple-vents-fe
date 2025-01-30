@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LucideX, LucideUser, LucideFolder, LucideMail } from 'lucide-react';
+import { LucideX, LucideUser, LucideFolder, LucideHome } from 'lucide-react';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
@@ -29,8 +29,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               onClick={toggleSidebar}
               role="menuitem"
             >
-              <LucideUser className="mr-3" size={20} aria-hidden="true" />
-              <span>About</span>
+              <LucideHome className="mr-3" size={20} aria-hidden="true" />
+              <span>Home</span>
             </Link>
           </li>
           <li role="none">
@@ -46,13 +46,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </li>
           <li role="none">
             <Link 
-              to="/contact" 
+              to="/profile" 
               className="flex items-center p-2 rounded-md hover:bg-gradient-to-r from-blue-200 to-purple-100 dark:hover:from-purple-700 dark:hover:to-purple-800" 
               onClick={toggleSidebar}
               role="menuitem"
             >
-              <LucideMail className="mr-3" size={20} aria-hidden="true" />
-              <span>Contact</span>
+              <LucideUser className="mr-3" size={20} aria-hidden="true" />
+              <span>Profile</span>
             </Link>
           </li>
         </ul>
