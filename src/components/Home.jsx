@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Auth from './Auth';
 
 const Home = ({ isDarkMode }) => {
   return (
@@ -12,8 +11,8 @@ const Home = ({ isDarkMode }) => {
       aria-label="Home section"
       aria-live="polite"
     >
-      <div className="container mx-auto px-4 py-8 pt-20">
-        <h2 className="text-4xl font-bold mb-10 text-center" tabIndex="-1">
+      <div className={`container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20`}>
+        <h2 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-center" tabIndex="-1">
           Welcome to My Events
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -45,14 +44,9 @@ const Home = ({ isDarkMode }) => {
             </p>
           </div>
         </div>
-
-        <div className="mt-10 text-center">
-          <Auth />
-        </div>
       </div>
     </motion.div>
   );
 };
 
 export default Home;
-

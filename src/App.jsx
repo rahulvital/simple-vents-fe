@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { supabase } from '../utils/supabase';
-import Auth from './components/Auth';
 import Callback from './components/Callback';
 import Home from './components/Home';
+import Profile from './components/Profile';
 import Header from './components/Header'; 
 import Sidebar from './components/Sidebar'; 
+import LoginPage from './components/LoginPage';
+import StarryBackground from './components/StarryBackground';
+import Contact from './components/Contact';
 
 const App = () => {
   const [user, setUser] = useState([]);
@@ -41,14 +44,17 @@ const App = () => {
 
   return (
     <Router>
-      <div className={`min-h-screen ${isDarkMode ? 'dark bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+      {location.pathname === '/' && !user && <StarryBackground isDarkMode={isDarkMode} />}
+      <div className={`min-h-screen ${isDarkMode ? 'dark text-white' : 'text-gray-900'}`}>
         <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} isDarkMode={isDarkMode} />
         <main className={`transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`} id="main-content">
-          <div className="container mx-auto px-4 py-8 pt-20">
+          <div className={`container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20`}>
             <Routes>
-              <Route path="/" element={user ? <Home /> : <Auth />} />
+              <Route path="/" element={user ? <Home /> : <LoginPage isDarkMode={isDarkMode} />} />
               <Route path="/auth/callback" element={<Callback />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/contact" element={<Contact />} />
             </Routes>
           </div>
         </main>

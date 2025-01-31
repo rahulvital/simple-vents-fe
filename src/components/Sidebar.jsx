@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LucideX, LucideUser, LucideFolder, LucideHome } from 'lucide-react';
+import { LucideX, LucideUser, LucideHome, LucidePlusCircle } from 'lucide-react';
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
   return (
     <aside 
       className={`fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}
@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <li role="none">
             <Link 
               to="/" 
-              className="flex items-center p-2 rounded-md hover:bg-gradient-to-r from-blue-200 to-purple-100 dark:hover:from-purple-700 dark:hover:to-purple-800" 
+              className={`flex items-center p-2 rounded-md ${isDarkMode ? 'hover:bg-gray-700 hover:bg-blue-800' : 'hover:bg-gradient-to-r from-pink-200 to-purple-100'}`} 
               onClick={toggleSidebar}
               role="menuitem"
             >
@@ -35,19 +35,19 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </li>
           <li role="none">
             <Link 
-              to="/projects" 
-              className="flex items-center p-2 rounded-md hover:bg-gradient-to-r from-blue-200 to-purple-100 dark:hover:from-purple-700 dark:hover:to-purple-800" 
+              to="/create-event" 
+              className={`flex items-center p-2 rounded-md ${isDarkMode ? 'hover:bg-gray-700 hover:bg-blue-800' : 'hover:bg-gradient-to-r from-pink-200 to-purple-100'}`} 
               onClick={toggleSidebar}
               role="menuitem"
             >
-              <LucideFolder className="mr-3" size={20} aria-hidden="true" />
-              <span>Projects</span>
+              <LucidePlusCircle className="mr-3" size={20} aria-hidden="true" />
+              <span>Create Event</span>
             </Link>
           </li>
           <li role="none">
             <Link 
               to="/profile" 
-              className="flex items-center p-2 rounded-md hover:bg-gradient-to-r from-blue-200 to-purple-100 dark:hover:from-purple-700 dark:hover:to-purple-800" 
+              className={`flex items-center p-2 rounded-md ${isDarkMode ? 'hover:bg-gray-700 hover:bg-blue-800' : 'hover:bg-gradient-to-r from-pink-200 to-purple-100'}`} 
               onClick={toggleSidebar}
               role="menuitem"
             >

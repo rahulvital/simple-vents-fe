@@ -2,18 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../utils/supabase';
 import UserMenu from './UserMenu';
 
-const Auth = () => {
+const Auth = ({isDarkMode }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check current user
     const checkUser = async () => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser();
         
-        // Don't treat missing session as an error
         if (error && !error.message.includes('Auth session missing')) {
           throw error;
         }
@@ -28,7 +26,6 @@ const Auth = () => {
       }
     };
 
-    // Set up auth state listener
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
@@ -37,9 +34,8 @@ const Auth = () => {
 
     checkUser();
 
-    // Cleanup
     return () => {
-      authListener?.subscription?.unsubscribe();
+      authListener?.unsubscribe?.();
     };
   }, []);
 
@@ -67,7 +63,6 @@ const Auth = () => {
     );
   }
 
-  // Only show actual errors, not the missing session message
   if (error && !error.includes('Auth session missing')) {
     return (
       <div className="text-red-600 dark:text-red-400 text-center p-4">
@@ -80,19 +75,17 @@ const Auth = () => {
     return <UserMenu user={user} />;
   }
 
-  // Show sign-in button when not logged in
   return (
     <div className="flex flex-col items-center space-y-4">
       <button
         onClick={signInWithGoogle}
-        className="flex items-center px-6 py-3 bg-white text-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-300"
+        className={`flex items-center px-3 py-3 bg-gray-800 text-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-800 bg-gray-800 ${isDarkMode ? 'hover:bg-blue-800 hover:border-customBlue': ' hover:bg-red-300 hover:border-red-300'}`}
       >
         <img
-          src="/api/placeholder/20/20"
+          src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
           alt="Google"
-          className="w-5 h-5 mr-3"
+          className="w-4 h-4"
         />
-        Sign in with Google
       </button>
     </div>
   );

@@ -8,8 +8,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        customBlue: '#1c56ba',
+        customBlue: '#0b2045',
         customPurple: '#5c10a2',
+        customDark: '#64325a',
+        customDark2: '#753d5c',
+        customDBlue: '#123471',
+      },
+      keyframes: {
+        twinkle: {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.3 },
+        },
+      },
+      animation: {
+        twinkle: 'twinkle 2s infinite',
       },
     },
   },

@@ -66,3 +66,7 @@
   box-shadow: 0 0 2px white, 200px 200px 2px white, 400px 400px 2px white;
   animation: twinkling 2s infinite ease-in-out;
 }
+
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
