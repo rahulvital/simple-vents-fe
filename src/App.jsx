@@ -9,6 +9,7 @@ import Sidebar from './components/Sidebar';
 import LoginPage from './components/LoginPage';
 import StarryBackground from './components/StarryBackground';
 import Contact from './components/Contact';
+import EventsLists from './components/EventsLists';
 
 const App = () => {
   const [user, setUser] = useState([]);
@@ -48,10 +49,11 @@ const App = () => {
       <div className={`min-h-screen ${isDarkMode ? 'dark text-white' : 'text-gray-900'}`}>
         <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} isDarkMode={isDarkMode} />
+        <StarryBackground isDarkMode={isDarkMode} user={user} />
         <main className={`transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`} id="main-content">
           <div className={`container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20`}>
             <Routes>
-              <Route path="/" element={user ? <Home /> : <LoginPage isDarkMode={isDarkMode} />} />
+              <Route path="/" element={user ? <Home user={user}/> : <LoginPage isDarkMode={isDarkMode} />} />
               <Route path="/auth/callback" element={<Callback />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/contact" element={<Contact />} />

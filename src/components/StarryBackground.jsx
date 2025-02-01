@@ -17,7 +17,6 @@ const StarryBackground = ({ isDarkMode }) => {
       canvas.height = height;
     };
 
-    // Initialize canvas size
     setCanvasSize();
 
     const stars = [];
@@ -55,7 +54,6 @@ const StarryBackground = ({ isDarkMode }) => {
 
     drawStars();
 
-    // Handle window resize
     const handleResize = () => {
       setCanvasSize();
     };
