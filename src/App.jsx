@@ -44,7 +44,7 @@ const App = () => {
   };
 
   return (
-    <Router>
+    <Router basename="/simple-vents-fe" >
       {location.pathname === '/' && !user && <StarryBackground isDarkMode={isDarkMode} />}
       <div className={`min-h-screen ${isDarkMode ? 'dark text-white' : 'text-gray-900'}`}>
         <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
