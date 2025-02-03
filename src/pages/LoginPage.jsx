@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Auth from "./Auth";
-import StarryBackground from "./StarryBackground";
+import Auth from "../components/auth/Auth";
+import StarryBackground from "../components/common/StarryBackground";
 
 const LoginPage = ({ isDarkMode }) => {
   return (

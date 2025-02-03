@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../../utils/supabase";
+import { supabase } from "../../../utils/supabase";
 import { LucideLogOut, LucideUser } from "lucide-react";
 
 const UserMenu = ({ user }) => {
@@ -10,7 +10,7 @@ const UserMenu = ({ user }) => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) {
-        console.log(error)
+        console.error('Sign-out error:', error.message);
         throw error;
       }
       navigate("/");
@@ -24,11 +24,7 @@ const UserMenu = ({ user }) => {
       <div className="flex items-center">
         {user?.user_metadata?.avatar_url ? (
           <img
-            src={
-              user.user_metadata.avatar_url
-                ? user.user_metadata.avatar_url
-                : "https://www.canva.com/design/DAGds4G_7NM/YY-9OqM6vmLG0qED63B-Rw/view?embed"
-            }
+            src={user.user_metadata.avatar_url}
             alt="Profile"
             className="w-8 h-8 rounded-full"
           />
@@ -53,4 +49,3 @@ const UserMenu = ({ user }) => {
 };
 
 export default UserMenu;
-

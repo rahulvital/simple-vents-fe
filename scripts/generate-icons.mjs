@@ -3,21 +3,17 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Get the directory name in ES modules
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(__dirname, '..');
 
-// Ensure the public directory exists
 const publicDir = path.join(projectRoot, 'public');
 if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true });
 }
 
-// Read the SVG file
 const svgPath = path.join(publicDir, 'icon.svg');
 const svgBuffer = fs.readFileSync(svgPath);
 
-// Generate maskable icon with padding
 await sharp(svgBuffer)
   .resize(512, 512, {
     fit: 'contain',

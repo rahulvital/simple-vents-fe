@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../utils/supabase';
+import { supabase } from '../../../utils/supabase';
 
 const Callback = () => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ const Callback = () => {
   useEffect(() => {
     const handleOAuthRedirect = async () => {
       const { data, error } = await supabase.auth.getSession();
-      
+
       if (error) {
         console.error('OAuth Error:', error.message);
       } else {

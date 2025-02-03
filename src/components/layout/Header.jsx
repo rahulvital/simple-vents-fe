@@ -1,6 +1,6 @@
 import React from 'react';
 import { LucideMenu, LucideMoon, LucideSun } from 'lucide-react';
-import Auth from './Auth';
+import Auth from '../auth/Auth';
 
 const Header = ({ isDarkMode, toggleDarkMode, toggleSidebar, isSidebarOpen }) => {
   return (

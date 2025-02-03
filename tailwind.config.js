@@ -13,7 +13,6 @@ export default {
         customDark: '#64325a',
         customDark2: '#753d5c',
         customDBlue: '#123471',
-        customSky: '#e6f2ff',
       },
       keyframes: {
         twinkle: {

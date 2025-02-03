@@ -39,10 +39,10 @@ const Contact = () => {
       <h2 className="text-4xl font-bold mb-6 text-center">Connect with me</h2>
       <div className="p-6 rounded-xl bg-gray-100 dark:bg-gray-800">
         <div className="flex justify-center items-center mb-8 space-x-4">
-          <a href="https://github.com/rahulvital" className="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition-colors duration-300">
+          <a href="https://github.com/rahulvital" className="text-gray-600 hover:text-customPurple dark:text-gray-300 dark:hover:text-white transition-colors duration-300">
             <LucideGithub size={32} />
           </a>
-          <a href="https://www.linkedin.com/in/rahul-v-16a61694/" className="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition-colors duration-300">
+          <a href="https://www.linkedin.com/in/rahul-v-16a61694/" className="text-gray-600 hover:text-customPurple dark:text-gray-300 dark:hover:text-white transition-colors duration-300">
             <LucideLinkedin size={32} />
           </a>
         </div>
@@ -83,7 +83,7 @@ const Contact = () => {
             ></textarea>
           </div>
           <div className="flex items-center space-x-4">
-            <button type="submit" className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors duration-300 flex items-center">
+            <button type="submit" className="bg-customDark2 text-white px-6 py-2 rounded hover:bg-white hover:text-black transition-colors duration-300 flex items-center">
               Send Message
               <LucideSend size={18} className="ml-2" />
             </button>
