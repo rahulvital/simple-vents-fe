@@ -10,64 +10,80 @@ const Auth = ({ isDarkMode }) => {
   const navigate = useNavigate(); 
 
   useEffect(() => {
-    let isMounted = true;
+    const checkSession = async () => {
+      try {
+        // Explicitly get current session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('Session retrieval error:', sessionError);
+          setError(sessionError.message);
+          setLoading(false);
+          return;
+        }
 
-    const handleAuthStateChange = async (event, session) => {
-      if (session?.user) {
-        try {
+        if (session?.user) {
+          // Ensure profile exists
           const { data: profile, error: profileError } = await supabase
             .from('profiles')
             .select('role')
             .eq('id', session.user.id)
             .single();
 
-          console.log(profile, "<<<<< profile");
+          if (profileError && profileError.code !== 'PGRST116') {
+            console.error('Profile fetch error:', profileError);
+            setError(profileError.message);
+          }
 
-          if (!profileError) {
-            const userData = {
-              ...session.user,
-              role: profile?.role || 'user',
-            };
-
-            if (isMounted) {
-              setUser(userData);
-              await supabase.auth.updateUser({
-                data: { role: userData.role },
+          // Create profile if not exists
+          if (profileError?.code === 'PGRST116') {
+            const { error: insertError } = await supabase
+              .from('profiles')
+              .insert({
+                id: session.user.id,
+                role: 'user',
+                email: session.user.email
               });
+
+            if (insertError) {
+              console.error('Profile creation error:', insertError);
             }
           }
-        } catch (error) {
-          console.error('Error handling auth state:', error.message);
-          if (isMounted) setError(error.message);
+
+          // Set user with extended information
+          setUser({
+            ...session.user,
+            role: profile?.role || 'user'
+          });
         }
+      } catch (catchError) {
+        console.error('Unexpected authentication error:', catchError);
+        setError(catchError.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      // console.log('Auth state change:', event);
+      if (session?.user) {
+        setUser(session.user);
       } else {
-        console.log('No session found');
-        if (isMounted) setUser(null);
+        setUser(null);
       }
-      if (isMounted) setLoading(false);
-    };
-
-    const getSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error('Error getting session:', error.message);
-        if (isMounted) setError(error.message);
-      }
-      await handleAuthStateChange('INITIAL', session);
-    };
-
-    getSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthStateChange);
+      setLoading(false);
+    });
 
     return () => {
-      isMounted = false;
-      subscription?.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 
   const signInWithGoogle = async () => {
     try {
+      setLoading(true);
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -78,10 +94,16 @@ const Auth = ({ isDarkMode }) => {
           },
         },
       });
-      if (error) throw error;
+      
+      if (error) {
+        console.error('Google sign-in error:', error);
+        setError(error.message);
+        setLoading(false);
+      }
     } catch (error) {
-      console.error('Google sign-in error:', error.message);
-      setError(error.message);
+      console.error('Unexpected sign-in error:', error);
+      setError('Sign-in failed');
+      setLoading(false);
     }
   };
 
@@ -93,39 +115,43 @@ const Auth = ({ isDarkMode }) => {
     );
   }
 
-  if (error && !error.includes('Auth session missing')) {
+  if (error) {
     return (
       <div className="text-red-600 dark:text-red-400 text-center p-4">
         {error}
+        <button 
+          onClick={() => {
+            setError(null);
+            setLoading(true);
+          }} 
+          className="ml-2 text-sm underline"
+        >
+          Retry
+        </button>
       </div>
     );
   }
 
   if (user) {
-    return <UserMenu user={user} role={user.role} />;
+    return <UserMenu user={user} />;
   }
 
   return (
     <div className="flex flex-col items-center space-y-4">
       <button
         onClick={signInWithGoogle}
+        disabled={loading}
         className={`flex items-center px-3 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border ${
           isDarkMode 
             ? 'bg-gray-800 text-white hover:bg-blue-800 border-customBlue' 
             : 'bg-white text-gray-800 hover:bg-gray-50 border-gray-300'
-        }`}
+        } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         <img
           src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
           alt="Google"
           className="w-4 h-4"
         />
-      </button>
-      <button
-        onClick={() => navigate(-1)}
-        className="mt-4 text-sm text-gray-600 hover:underline"
-      >
-        Go Back
       </button>
     </div>
   );

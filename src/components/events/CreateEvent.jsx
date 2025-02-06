@@ -3,7 +3,6 @@ import { supabase } from '../../../utils/supabase';
 import { useNavigate } from 'react-router-dom';
 
 const CreateEvent = ( {user} ) => {
-    console.log(user)
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
@@ -12,7 +11,8 @@ const CreateEvent = ( {user} ) => {
     date: '',
     time: '',
     capacity: 100,
-    img: ''
+    img: '',
+    registrations: []
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -26,28 +26,29 @@ const CreateEvent = ( {user} ) => {
       const eventDate = new Date(`${formData.date}T${formData.time}`);
       
       const { data, error: supabaseError } = await supabase
-        .from('events')
-        .insert([{
+      .from('events')
+      .insert([{
           title: formData.title,
           description: formData.description,
           location: formData.location,
           date: eventDate.toISOString(),
           capacity: formData.capacity,
           img: formData.img,
-          user_id: user.id
+          user_id: user.id,
+          registrations: []
         }])
         .select();
-
-      if (supabaseError) throw supabaseError;
-
-      navigate(`/staff`);
-    } catch (err) {
-      console.error('Error creating event:', err);
-      setError(err.message || 'Failed to create event');
-    } finally {
-      setLoading(false);
-    }
-  };
+        if (supabaseError) throw supabaseError;
+        console.log(data, '<<<<<<create events')
+        
+        navigate(`/staff`);
+      } catch (err) {
+        console.error('Error creating event:', err);
+        setError(err.message || 'Failed to create event');
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleChange = (e) => {
     setFormData({

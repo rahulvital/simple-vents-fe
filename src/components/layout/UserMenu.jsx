@@ -1,21 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../utils/supabase";
 import { LucideLogOut, LucideUser } from "lucide-react";
 
 const UserMenu = ({ user }) => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSignOut = async () => {
+    setIsLoading(true);
+    setError(null);
+
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error('Sign-out error:', error.message);
-        throw error;
-      }
+      
+      if (error) throw error;
+      
       navigate("/");
     } catch (error) {
-      console.error("Error signing out:", error.message);
+      console.error("Sign-out error:", error);
+      setError('Sign-out failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -25,8 +32,8 @@ const UserMenu = ({ user }) => {
         {user?.user_metadata?.avatar_url ? (
           <img
             src={user.user_metadata.avatar_url}
-            alt="Profile"
-            className="w-8 h-8 rounded-full"
+            alt={`${user.user_metadata.full_name}'s profile`}
+            className="w-8 h-8 rounded-full border-2 border-gray-300"
           />
         ) : (
           <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
@@ -34,15 +41,15 @@ const UserMenu = ({ user }) => {
           </div>
         )}
         <span className="ml-2 text-sm font-medium">
-          {user?.user_metadata?.full_name || user?.email}
+          {user.user_metadata.full_name || user.email}
         </span>
       </div>
       <button
         onClick={handleSignOut}
-        className="flex items-center px-3 py-2 text-sm font-medium text-white hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
-        alt="Sign Out"
+        disabled={isLoading}
+        className="text-red-500 hover:text-red-700"
       >
-        <LucideLogOut className="w-5 h-5 mr-2" />
+        <LucideLogOut className="w-5 h-5" />
       </button>
     </div>
   );

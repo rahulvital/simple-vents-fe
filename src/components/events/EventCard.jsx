@@ -31,6 +31,10 @@ const EventCard = ({ event, user }) => {
     await addToGoogleCalendar(event);
   };
 
+  const addToGoogleCalendar = () => {
+    console.log("register?????")
+  }
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
       <img 

@@ -10,6 +10,7 @@ import StaffDashboard from './pages/StaffDashboard';
 import ContactPage from './pages/ContactPage';
 import StarryBackground from './components/common/StarryBackground';
 import CreateEvent from './components/events/CreateEvent';
+import Callback from './components/auth/Callback'
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -20,7 +21,6 @@ const App = () => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setUser(session?.user ?? null);
-        console.log('Auth state changed, user:', session?.user);
       }
     );
     return () => authListener?.subscription?.unsubscribe();
@@ -51,6 +51,7 @@ const App = () => {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/staff" element={<StaffDashboard user={user} />} />
               <Route path="/create-event" element={<CreateEvent user={user} />} />
+              <Route path="/auth/callback" element={<Callback />} />
             </Routes>
           </div>
         </main>
