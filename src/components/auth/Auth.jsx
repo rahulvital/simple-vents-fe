@@ -12,7 +12,6 @@ const Auth = ({ isDarkMode }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        // Explicitly get current session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -23,7 +22,6 @@ const Auth = ({ isDarkMode }) => {
         }
 
         if (session?.user) {
-          // Ensure profile exists
           const { data: profile, error: profileError } = await supabase
             .from('profiles')
             .select('role')
@@ -35,7 +33,6 @@ const Auth = ({ isDarkMode }) => {
             setError(profileError.message);
           }
 
-          // Create profile if not exists
           if (profileError?.code === 'PGRST116') {
             const { error: insertError } = await supabase
               .from('profiles')
@@ -50,7 +47,6 @@ const Auth = ({ isDarkMode }) => {
             }
           }
 
-          // Set user with extended information
           setUser({
             ...session.user,
             role: profile?.role || 'user'
@@ -67,7 +63,6 @@ const Auth = ({ isDarkMode }) => {
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      // console.log('Auth state change:', event);
       if (session?.user) {
         setUser(session.user);
       } else {

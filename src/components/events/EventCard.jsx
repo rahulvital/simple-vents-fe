@@ -1,10 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../../../utils/supabase';
 import { addToGoogleCalendar } from '../../../utils/calendar';
 
 const EventCard = ({ event, user }) => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [spotsLeft, setSpotsLeft] = useState(event.spotsLeft);
+
+  // When the component mounts, check if the user is already registered.
+  useEffect(() => {
+    const checkRegistration = async () => {
+      if (!user) return;
+      const { data, error } = await supabase
+        .from('registrations')
+        .select('id')
+        .eq('event_id', event.id)
+        .eq('user_id', user.id)
+      if (data) {
+        setIsRegistered(true);
+      }
+    };
+
+    checkRegistration();
+  }, [user, event.id]);
 
   const handleRegistration = async () => {
     if (!user) return;
@@ -28,12 +45,8 @@ const EventCard = ({ event, user }) => {
 
   const handleAddToCalendar = async () => {
     if (!isRegistered) return;
-    await addToGoogleCalendar(event);
+    addToGoogleCalendar(event);
   };
-
-  const addToGoogleCalendar = () => {
-    console.log("register?????")
-  }
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
@@ -82,4 +95,4 @@ const EventCard = ({ event, user }) => {
   );
 };
 
-export default EventCard;
+export default EventCard; 
