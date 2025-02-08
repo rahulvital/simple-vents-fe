@@ -13,7 +13,7 @@ const Home = ({ isDarkMode, user }) => {
     >
       <div className={`container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20`}>
         <h2 className={`text-3xl sm:text-4xl font-bold mb-6 sm:mb-10 text-center ${isDarkMode ? 'text-white' : 'text-black'}`} tabIndex="-1">
-          e<span className='text-customDark'>Vents</span> near you!
+          <span className='dark:text-white'>e</span><span className='text-customDark dark:text-blue-500'>Vents</span><span className='dark:text-white'>near you!</span>
         </h2>
         <EventsList user={user} />
       </div>

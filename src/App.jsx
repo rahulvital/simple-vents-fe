@@ -5,15 +5,14 @@ import Header from './components/layout/Header';
 import Sidebar from './components/layout/Sidebar';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import ProfilePage from './pages/ProfilePage';
 import StaffDashboard from './pages/StaffDashboard';
-import ContactPage from './pages/ContactPage';
 import StarryBackground from './components/common/StarryBackground';
 import CreateEvent from './components/events/CreateEvent';
 import Callback from './components/auth/Callback'
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -21,8 +20,11 @@ const App = () => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setUser(session?.user ?? null);
+        setToken(session?.provider_token);
       }
     );
+    localStorage.setItem('google_provider_token', token);
+    console.log(token, '<<<<<')
     return () => authListener?.subscription?.unsubscribe();
   }, []);
 
@@ -47,8 +49,6 @@ const App = () => {
             <Routes>
               <Route path="/" element={<HomePage user={user} />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/profile" element={<ProfilePage user={user} />} />
-              <Route path="/contact" element={<ContactPage />} />
               <Route path="/staff" element={<StaffDashboard user={user} />} />
               <Route path="/create-event" element={<CreateEvent user={user} />} />
               <Route path="/auth/callback" element={<Callback />} />

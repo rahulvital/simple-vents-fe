@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../utils/supabase';
 import UserMenu from '../layout/UserMenu';
-import { useNavigate } from 'react-router-dom';
 
 const Auth = ({ isDarkMode }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); 
 
   useEffect(() => {
     const checkSession = async () => {
@@ -63,9 +61,13 @@ const Auth = ({ isDarkMode }) => {
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(session, 'SESSIOPNNNN')
       if (session?.user) {
+        // localStorage.setItem("google_access_token", session.provider_token);
+        // console.log(session.provider_token, '<<<<<')
         setUser(session.user);
       } else {
+        localStorage.clear();
         setUser(null);
       }
       setLoading(false);
@@ -83,6 +85,7 @@ const Auth = ({ isDarkMode }) => {
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
+          scopes: 'https://www.googleapis.com/auth/calendar',
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',

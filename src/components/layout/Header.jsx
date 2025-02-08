@@ -22,7 +22,7 @@ const Header = ({ isDarkMode, toggleDarkMode, toggleSidebar, isSidebarOpen }) =>
             <LucideMenu size={24} aria-hidden="true" />
           </button>
         </div>
-          <h1 className={`text-2xl font-bold ml-4 text-center`}>Vents</h1>
+          <h1 className={`text-xl font-bold ml-4 text-center`}><span className='text-red-300 dark:text-blue-500'>e</span>Vents</h1>
         
         <div className="flex items-center space-x-4">
           <Auth isDarkMode={isDarkMode} />

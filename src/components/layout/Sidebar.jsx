@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LucideX, LucideUser, LucideHome, LucidePlusCircle } from 'lucide-react';
+import { LucideX, LucideHome, LucidePlusCircle } from 'lucide-react';
 import { LucidePhone } from 'lucide-react';
 
 const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
@@ -43,28 +43,6 @@ const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
             >
               <LucidePlusCircle className="mr-3" size={20} aria-hidden="true" />
               <span>Create Event</span>
-            </Link>
-          </li>
-          <li role="none">
-            <Link 
-              to="/profile" 
-              className={`flex items-center p-2 rounded-md ${isDarkMode ? 'hover:bg-gray-700 hover:bg-blue-800' : 'hover:bg-gradient-to-r from-pink-200 to-purple-100'}`} 
-              onClick={toggleSidebar}
-              role="menuitem"
-            >
-              <LucideUser className="mr-3" size={20} aria-hidden="true" />
-              <span>Profile</span>
-            </Link>
-          </li>
-          <li role="none">
-            <Link 
-              to="/contact" 
-              className={`flex items-center p-2 rounded-md ${isDarkMode ? 'hover:bg-gray-700 hover:bg-blue-800' : 'hover:bg-gradient-to-r from-pink-200 to-purple-100'}`} 
-              onClick={toggleSidebar}
-              role="menuitem"
-            >
-              <LucidePhone className="mr-3" size={20} aria-hidden="true" />
-              <span>Contact Us</span>
             </Link>
           </li>
         </ul>
