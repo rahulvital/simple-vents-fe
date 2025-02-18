@@ -72,6 +72,6 @@ The application utilizes the following technologies:
     pnpm dev
 
  **Production mode**
-    ```bash
-    pnpm build
-    pnpm preview
+   ```bash
+   pnpm build
+   pnpm preview
