@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LucideX, LucideHome, LucidePlusCircle } from 'lucide-react';
-import { LucidePhone } from 'lucide-react';
 
 const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
   return (

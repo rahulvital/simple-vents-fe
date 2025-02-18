@@ -22,9 +22,11 @@ export const addToGoogleCalendar = async (event) => {
         body: JSON.stringify(eventDetails)
       });
       console.log(localStorage.getItem('google_provider_token'))
-  
       return await response.json();
     } catch (error) {
       console.error('Calendar integration error:', error);
     } 
+    finally {
+      alert('Event added to Google Calendar!');
+    }
   };

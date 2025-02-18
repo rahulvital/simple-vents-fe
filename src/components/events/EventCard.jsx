@@ -5,6 +5,7 @@ import { addToGoogleCalendar } from '../../../utils/calendar';
 const EventCard = ({ event, user }) => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [spotsLeft, setSpotsLeft] = useState(event.spotsLeft);
+  const [addedToCalendar, setAddedToCalendar] = useState(false);
 
   // When the component mounts, check if the user is already registered.
   useEffect(() => {
@@ -45,14 +46,20 @@ const EventCard = ({ event, user }) => {
 
   const handleAddToCalendar = async () => {
     if (!isRegistered) return;
-    addToGoogleCalendar(event);
-  };
+    try {
+      addToGoogleCalendar(event);
+    } catch (error) {
+      console.error('Calendar integration error:', error);
+    } finally {
+      setAddedToCalendar(true);
+    }
+  }
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
       <img 
-        src={event.img} 
-        alt={event.title} 
+        src={event.img ? event.img : 'https://img.freepik.com/free-photo/enjoyment-activities-festivities-movies-pastime_53876-21362.jpg?t=st=1739840245~exp=1739843845~hmac=d28d474b2fc5d88df5aeb924deaeed693db70ccf1a3a7250e1b1020c246bd30a&w=900'} 
+        alt={event.img ? event.title : event.title + 'Image by rawpixel.com on Freepik'} 
         className="w-full h-48 object-cover rounded-lg mb-4"
       />
       <h3 className="text-xl font-bold mb-2 text-white">{event.title}</h3>

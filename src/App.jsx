@@ -8,7 +8,7 @@ import LoginPage from './pages/LoginPage';
 import StaffDashboard from './pages/StaffDashboard';
 import StarryBackground from './components/common/StarryBackground';
 import CreateEvent from './components/events/CreateEvent';
-import Callback from './components/auth/Callback'
+import Callback from './components/auth/Callback';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -17,16 +17,20 @@ const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null);
-        setToken(session?.provider_token);
-      }
-    );
-    localStorage.setItem('google_provider_token', token);
-    console.log(token, '<<<<<')
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      setToken(session?.provider_token);
+    });
     return () => authListener?.subscription?.unsubscribe();
   }, []);
+
+  // Update local storage whenever token changes
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('google_provider_token', token);
+      console.log(token, '<<<<< updated token');
+    }
+  }, [token]);
 
   return (
     <Router>
@@ -43,7 +47,6 @@ const App = () => {
           toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           isStaff={user?.user_metadata?.is_staff}
         />
-        
         <main className={`pt-16 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
           <div className="container mx-auto px-4 py-8">
             <Routes>
