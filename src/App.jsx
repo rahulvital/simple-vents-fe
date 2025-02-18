@@ -24,7 +24,6 @@ const App = () => {
     return () => authListener?.subscription?.unsubscribe();
   }, []);
 
-  // Update local storage whenever token changes
   useEffect(() => {
     if (token) {
       localStorage.setItem('google_provider_token', token);
