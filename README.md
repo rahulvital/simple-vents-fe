@@ -14,6 +14,9 @@ In the current version, authorized Google users can also:
 - **Email**: ventsprojectdev@gmail.com
 - **Password**: Vents@123
 
+Please do watch this youtube video to see the application in action!
+https://youtu.be/hOxKwtkMwQc
+
 # Tech Stack
 
 The application utilizes the following technologies:
