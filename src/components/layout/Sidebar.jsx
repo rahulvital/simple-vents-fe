@@ -5,7 +5,7 @@ import { LucideX, LucideHome, LucidePlusCircle } from 'lucide-react';
 const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
   return (
     <aside 
-      className={`fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}
+      className={`fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 dark:text-white shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}
       role="navigation"
       aria-label="Main navigation"
       id="sidebar-menu"
