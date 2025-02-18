@@ -8,8 +8,20 @@
     <meta name="theme-color" content="#3B82F6" />
     <meta name="description" content="Vents - Your Event Management App" />
     <title>Vents</title>
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script type="module" crossorigin src="/simple-vents-fe/assets/index-CM33VQpQ.js"></script>
+    <script type="module" crossorigin src="/simple-vents-fe/assets/index-B2mie8AR.js"></script>
     <link rel="stylesheet" crossorigin href="/simple-vents-fe/assets/index-BataGQfS.css">
   </head>
   <body>
@@ -19,7 +31,7 @@
       data-client_id="574613942514-164dugut9t2p8i8gllfl6nbtjpdqrteb.apps.googleusercontent.com"
       data-context="signin"
       data-ux_mode="popup"
-      data-login_uri="http://rahulvital.github.io/simple-vents-fe/auth/callback"
+      data-login_uri="https://rahulvital.github.io/simple-vents-fe/auth/callback"
       data-auto_prompt="false"
       data-callback="handleSignInWithGoogle"
       data-nonce=""
