@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../utils/supabase';
 import UserMenu from '../layout/UserMenu';
+import { getBaseUrl } from '../../../utils/urlConfig';
 
 const Auth = ({ isDarkMode }) => {
   const [user, setUser] = useState(null);
@@ -81,7 +82,7 @@ const Auth = ({ isDarkMode }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${getBaseUrl()}/auth/callback`,
           scopes: 'https://www.googleapis.com/auth/calendar',
           queryParams: {
             access_type: 'offline',
@@ -147,6 +148,7 @@ const Auth = ({ isDarkMode }) => {
           alt="Google"
           className="w-4 h-4"
         />
+        <span className="ml-2">Sign in with Google</span>
       </button>
     </div>
   );
