@@ -2,26 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-    <link rel="mask-icon" href="/icon.svg" color="#3B82F6" />
+    <link rel="icon" type="image/svg+xml" href="/simple-vents-fe/icon.svg" />
+    <link rel="mask-icon" href="/simple-vents-fe/icon.svg" color="#3B82F6" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#3B82F6" />
     <meta name="description" content="Vents - Your Event Management App" />
-    <link rel="manifest" href="/site.webmanifest" />
     <title>Vents</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script type="module" crossorigin src="/assets/index-BVfeKiOV.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DpFgdhWh.css">
+    <script type="module" crossorigin src="/simple-vents-fe/assets/index-CFBujda3.js"></script>
+    <link rel="stylesheet" crossorigin href="/simple-vents-fe/assets/index-BataGQfS.css">
   </head>
   <body>
     <div id="root"></div>
-    <div id="g_id_onload"
-         data-client_id="574613942514-164dugut9t2p8i8gllfl6nbtjpdqrteb.apps.googleusercontent.com"
-         data-context="signin"
-         data-ux_mode="popup"
-         data-login_uri="http://localhost:5137/auth/callback"
-         data-auto_prompt="false">
-    </div>
-
+    <div
+      id="g_id_onload"
+      data-client_id="574613942514-164dugut9t2p8i8gllfl6nbtjpdqrteb.apps.googleusercontent.com"
+      data-context="signin"
+      data-ux_mode="popup"
+      data-login_uri="http://localhost:5137/auth/callback"
+      data-auto_prompt="false"
+      data-callback="handleSignInWithGoogle"
+      data-nonce=""
+      data-auto_select="true"
+      data-itp_support="true"
+      data-use_fedcm_for_prompt="true"
+    ></div>
   </body>
 </html>
