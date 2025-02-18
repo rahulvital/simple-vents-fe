@@ -31,7 +31,7 @@ const App = () => {
   }, [token]);
 
   return (
-    <Router>
+    <Router basename='/simple-vents-fe'>
       <div className={`min-h-screen ${isDarkMode ? 'dark' : ''}`}>
         <StarryBackground isDarkMode={isDarkMode} />
         <Header
