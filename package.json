@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --base ./",
+    "dev": "vite",
     "build": "vite build",
     "generate-icons": "node scripts/generate-icons.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
+    "predeploy": "vite build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {

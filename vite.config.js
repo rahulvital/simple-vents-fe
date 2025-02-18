@@ -4,7 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/simple-vents-fe/',
+  base: '/simple-vents-fe/',  // Make sure this matches your repo name
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -13,9 +13,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
   },
   server: {
     port: 5173,
-    host: true,
-  },
+    host: true
+  }
 });
