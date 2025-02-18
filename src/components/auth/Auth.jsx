@@ -147,7 +147,7 @@ const Auth = ({ isDarkMode }) => {
           alt="Google"
           className="w-4 h-4"
         />
-        <span className="ml-2">Sign in with Google</span>
+        <span className="ml-2"></span>
       </button>
     </div>
   );
