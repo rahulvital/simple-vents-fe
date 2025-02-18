@@ -56,7 +56,7 @@ const CreateEvent = ( {user} ) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8 text-black dark:text-white">
       <h2 className="text-2xl font-bold mb-6">Create New Event</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
