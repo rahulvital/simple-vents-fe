@@ -61,10 +61,7 @@ const Auth = ({ isDarkMode }) => {
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log(session, 'SESSIOPNNNN')
       if (session?.user) {
-        // localStorage.setItem("google_access_token", session.provider_token);
-        // console.log(session.provider_token, '<<<<<')
         setUser(session.user);
       } else {
         localStorage.clear();
