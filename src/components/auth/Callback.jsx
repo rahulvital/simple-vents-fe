@@ -12,7 +12,6 @@ const Callback = () => {
       if (error) {
         console.error('OAuth Error:', error.message);
       } else {
-        console.log('User authenticated:', data);
         navigate('/');
       }
     };

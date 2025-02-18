@@ -7,7 +7,6 @@ const EventCard = ({ event, user }) => {
   const [spotsLeft, setSpotsLeft] = useState(event.spotsLeft);
   const [addedToCalendar, setAddedToCalendar] = useState(false);
 
-  // When the component mounts, check if the user is already registered.
   useEffect(() => {
     const checkRegistration = async () => {
       if (!user) return;

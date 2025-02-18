@@ -27,7 +27,6 @@ const App = () => {
   useEffect(() => {
     if (token) {
       localStorage.setItem('google_provider_token', token);
-      console.log(token, '<<<<< updated token');
     }
   }, [token]);
 

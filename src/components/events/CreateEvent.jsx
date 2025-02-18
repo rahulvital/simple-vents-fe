@@ -38,9 +38,7 @@ const CreateEvent = ( {user} ) => {
           registrations: []
         }])
         .select();
-        if (supabaseError) throw supabaseError;
-        console.log(data, '<<<<<<create events')
-        
+        if (supabaseError) throw supabaseError;        
         navigate(`/staff`);
       } catch (err) {
         console.error('Error creating event:', err);

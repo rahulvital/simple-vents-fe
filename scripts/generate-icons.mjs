@@ -31,5 +31,3 @@ await sharp(svgBuffer)
     console.error('Error generating icon:', err);
     process.exit(1);
   });
-
-console.log('✨ Icons generated successfully!');
