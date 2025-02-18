@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../utils/supabase';
 import UserMenu from '../layout/UserMenu';
-import { getBaseUrl } from '../../../utils/urlConfig';
 
 const Auth = ({ isDarkMode }) => {
   const [user, setUser] = useState(null);
@@ -82,7 +81,7 @@ const Auth = ({ isDarkMode }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${getBaseUrl()}/auth/callback`,
+          redirectTo: `https://rahulvital.github.io/simple-vents-fe/auth/callback`,
           scopes: 'https://www.googleapis.com/auth/calendar',
           queryParams: {
             access_type: 'offline',
