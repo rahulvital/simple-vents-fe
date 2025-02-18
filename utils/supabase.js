@@ -11,7 +11,8 @@ const options = {
     flowType: 'pkce',
     storage: window.localStorage,
     storageKey: 'supabase-auth-token',
-    debug: import.meta.env.DEV
+    debug: import.meta.env.DEV,
+    site_url: 'https://rahulvital.github.io/simple-vents-fe'
   },
   db: {
     schema: 'public',
