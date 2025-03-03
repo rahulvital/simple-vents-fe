@@ -37,7 +37,7 @@ const UserMenu = ({ user }) => {
           />
         ) : (
           <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-            <LucideUser className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+            <LucideUser className="w-4 h-4 text-gray-500 dark:text-gray-400" />
           </div>
         )}
         <span className="ml-2 text-sm font-medium">

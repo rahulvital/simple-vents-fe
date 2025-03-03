@@ -14,9 +14,11 @@ const EventCard = ({ event, user }) => {
         .from('registrations')
         .select('id')
         .eq('event_id', event.id)
-        .eq('user_id', user.id)
-      if (data) {
+        .eq('user_id', user.id);
+      if (data && data.length > 0) {
         setIsRegistered(true);
+      } else {
+        setIsRegistered(false);
       }
     };
 
@@ -25,7 +27,6 @@ const EventCard = ({ event, user }) => {
 
   const handleRegistration = async () => {
     if (!user) return;
-    
     try {
       const { error } = await supabase
         .from('registrations')
@@ -43,6 +44,25 @@ const EventCard = ({ event, user }) => {
     }
   };
 
+  const handleUnregister = async () => {
+    if (!user) return;
+    try {
+      console.log('Removing registration');
+      const { error } = await supabase
+        .from('registrations')
+        .delete()
+        .eq('event_id', event.id)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      setIsRegistered(false);
+      setSpotsLeft(prev => prev + 1);
+    } catch (error) {
+      console.error('Error removing registration:', error.message);
+    }
+  };
+
   const handleAddToCalendar = async () => {
     if (!isRegistered) return;
     try {
@@ -52,13 +72,13 @@ const EventCard = ({ event, user }) => {
     } finally {
       setAddedToCalendar(true);
     }
-  }
+  };
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
       <img 
-        src={event.img ? event.img : 'https://img.freepik.com/free-photo/enjoyment-activities-festivities-movies-pastime_53876-21362.jpg?t=st=1739840245~exp=1739843845~hmac=d28d474b2fc5d88df5aeb924deaeed693db70ccf1a3a7250e1b1020c246bd30a&w=900'} 
-        alt={event.img ? event.title : event.title + 'Image by rawpixel.com on Freepik'} 
+        src={event.img ? event.img : 'https://img.freepik.com/free-photo/enjoyment-activities-festivities-movies-pastime_53876-21362.jpg'} 
+        alt={event.img ? event.title : event.title + ' Image by rawpixel.com on Freepik'} 
         className="w-full h-48 object-cover rounded-lg mb-4"
       />
       <h3 className="text-xl font-bold mb-2 text-white">{event.title}</h3>
@@ -76,20 +96,29 @@ const EventCard = ({ event, user }) => {
       
       {user ? (
         <div className="space-y-2">
-          <button
-            onClick={handleRegistration}
-            disabled={isRegistered || spotsLeft <= 0}
-            className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
-          >
-            {isRegistered ? 'Registered' : 'Register Now'}
-          </button>
-          {isRegistered && (
+          {!isRegistered ? (
             <button
-              onClick={handleAddToCalendar}
-              className="w-full border border-blue-600 text-blue-600 py-2 rounded"
+              onClick={handleRegistration}
+              disabled={spotsLeft <= 0}
+              className="w-full bg-blue-600 text-white py-2 rounded disabled:opacity-50"
             >
-              Add to Google Calendar
+              Register Now
             </button>
+          ) : (
+            <>
+              <button
+                onClick={handleUnregister}
+                className="w-full bg-red-600 text-white py-2 rounded"
+              >
+                Unregister
+              </button>
+              <button
+                onClick={handleAddToCalendar}
+                className="w-full border border-blue-600 text-blue-600 py-2 rounded"
+              >
+                Add to Google Calendar
+              </button>
+            </>
           )}
         </div>
       ) : (
@@ -101,4 +130,4 @@ const EventCard = ({ event, user }) => {
   );
 };
 
-export default EventCard; 
+export default EventCard;
