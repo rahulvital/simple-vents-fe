@@ -9,6 +9,8 @@ import StaffDashboard from './pages/StaffDashboard';
 import StarryBackground from './components/common/StarryBackground';
 import CreateEvent from './components/events/CreateEvent';
 import Callback from './components/auth/Callback';
+import './App.css';
+import EventsPage from './pages/EventsPage';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -53,6 +55,7 @@ const App = () => {
               <Route path="/staff" element={<StaffDashboard user={user} />} />
               <Route path="/create-event" element={<CreateEvent user={user} />} />
               <Route path="/auth/callback" element={<Callback />} />
+              <Route path="/events/:id" element={<EventsPage user={user} />} />
             </Routes>
           </div>
         </main>

@@ -9,6 +9,9 @@ In the current version, authorized Google users can also:
 - create events and add them to the Supabase database.
 - View their created events.
 
+# Hosted website
+- https://rahulvital.github.io/simple-vents-fe/
+
 **Test Account for Event Creation:**
 
 - **Email**: ventsprojectdev@gmail.com
@@ -16,6 +19,7 @@ In the current version, authorized Google users can also:
 
 Please do watch this youtube video to see the application in action!
 https://youtu.be/hOxKwtkMwQc
+
 
 # Tech Stack
 
