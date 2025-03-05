@@ -18,7 +18,7 @@ const EventsPage = ({ user }) => {
   const filledButtonClass =
     "flex-1 bg-blue-600 text-white py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors";
   const outlinedButtonClass =
-    "flex-1 border border-blue-600 text-blue-600 py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-50 transition-colors";
+    "flex-1 border border-blue-600 text-blue-600 py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-50 transition-colors dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-950";
   const dangerButtonClass =
     "bg-red-600 text-white py-2 px-4 rounded flex items-center justify-center space-x-2 hover:bg-red-700 transition-colors";
 
@@ -136,7 +136,7 @@ const EventsPage = ({ user }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-pulse text-xl text-gray-500">
+        <div className="animate-pulse text-xl text-gray-500 dark:text-gray-400">
           Loading event details...
         </div>
       </div>
@@ -145,15 +145,19 @@ const EventsPage = ({ user }) => {
 
   if (!event) {
     return (
-      <div className="flex justify-center items-center min-h-screen text-red-500">
+      <div className="flex justify-center items-center min-h-screen text-red-500 dark:text-red-400">
         No event found with id: {id}
       </div>
     );
   }
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="bg-white shadow-lg rounded-xl overflow-hidden relative">
+      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden relative">
         {/* Staff Edit/Delete Buttons */}
         {isStaffCreator && (
           <div className="absolute top-4 right-4 z-10 flex space-x-2">
@@ -185,9 +189,9 @@ const EventsPage = ({ user }) => {
         )}
         
         <div className="p-6">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">{event.title}</h1>
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">{event.title}</h1>
           
-          <div className="grid md:grid-cols-3 gap-4 mb-6 text-gray-600">
+          <div className="grid md:grid-cols-3 gap-4 mb-6 text-gray-600 dark:text-gray-300">
             <div className="flex items-center space-x-2">
               <Calendar className="w-5 h-5 text-blue-500" />
               <span>{new Date(event.date).toLocaleString()}</span>
@@ -205,7 +209,7 @@ const EventsPage = ({ user }) => {
           </div>
 
           <div className="prose max-w-none mb-6">
-            <p className="text-gray-700 leading-relaxed">{event.description}</p>
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{event.description}</p>
           </div>
 
           {/* Registration and Calendar Buttons */}
@@ -237,7 +241,7 @@ const EventsPage = ({ user }) => {
               </>
             ) : (
               <button
-                onClick={() => navigate('/login')}
+                onClick={handleLoginClick}
                 className={filledButtonClass}
               >
                 <span>Login to Register</span>

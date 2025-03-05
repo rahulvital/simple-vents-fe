@@ -3,18 +3,19 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../../utils/supabase';
 import { addToGoogleCalendar } from '../../../utils/calendar';
 import { LogIn, InfoIcon, Check, Calendar, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const EventCard = ({ event, user, onLogin }) => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [spotsLeft, setSpotsLeft] = useState(event.spotsLeft);
   const [addedToCalendar, setAddedToCalendar] = useState(false);
-
+  const navigate = useNavigate();
   const filledButtonClass =
     "flex-1 bg-blue-600 text-white py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors";
   const outlinedButtonClass =
-    "flex-1 border border-blue-600 text-blue-600 py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-50 transition-colors";
+    "flex-1 border border-blue-600 text-blue-600 py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-50 transition-colors dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-950";
   const disabledButtonClass =
-    "flex-1 bg-gray-300 text-gray-500 py-2 rounded flex items-center justify-center space-x-2 cursor-not-allowed";
+    "flex-1 bg-gray-300 text-gray-500 py-2 rounded flex items-center justify-center space-x-2 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400";
 
   useEffect(() => {
     const checkRegistration = async () => {
@@ -75,8 +76,12 @@ const EventCard = ({ event, user, onLogin }) => {
     }
   };
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  }
+  
   return (
-    <div className="bg-white shadow-lg rounded-xl overflow-hidden flex flex-col h-full">
+    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden flex flex-col h-full">
       <Link to={`/events/${event.id}`}>
         <div className="h-48 overflow-hidden">
           <img
@@ -90,12 +95,12 @@ const EventCard = ({ event, user, onLogin }) => {
           />
         </div>
         <div className="p-4">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">{event.title}</h3>
+          <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">{event.title}</h3>
         </div>
       </Link>
 
       <div className="px-4 pb-4 flex-grow">
-        <div className="grid gap-3 mb-4 text-gray-600">
+        <div className="grid gap-3 mb-4 text-gray-600 dark:text-gray-300">
           <div className="flex items-center space-x-2">
             <Calendar className="w-5 h-5 text-blue-500" />
             <span>{new Date(event.date).toLocaleString()}</span>
@@ -104,7 +109,7 @@ const EventCard = ({ event, user, onLogin }) => {
             <MapPin className="w-5 h-5 text-green-500" />
             <span>{event.location}</span>
           </div>
-          <div className="flex items-center space-x-2 text-purple-500">
+          <div className="flex items-center space-x-2 text-purple-500 dark:text-purple-400">
             <span>🎟️ {spotsLeft} spots remaining</span>
           </div>
         </div>
@@ -149,7 +154,7 @@ const EventCard = ({ event, user, onLogin }) => {
           </div>
         ) : (
           <div className="flex space-x-2">
-            <button onClick={onLogin} className={filledButtonClass}>
+            <button onClick={handleLoginClick} className={filledButtonClass}>
               <LogIn size={20} />
               <span>Login</span>
             </button>

@@ -25,9 +25,10 @@ const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
           <li role="none">
             <Link 
               to="/" 
-              className={`flex items-center p-2 rounded-md ${isDarkMode ? 'hover:bg-gray-700 hover:bg-blue-800' : 'hover:bg-gradient-to-r from-pink-200 to-purple-100'}`} 
-              onClick={toggleSidebar}
-              role="menuitem"
+              className={`flex items-center p-2 rounded-md 
+                hover:bg-gradient-to-r hover:from-pink-200 hover:to-purple-100 
+                dark:hover:bg-gray-700 dark:hover:bg-gray-600
+              `} role="menuitem"
             >
               <LucideHome className="mr-3" size={20} aria-hidden="true" />
               <span>Home</span>
@@ -36,12 +37,25 @@ const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
           <li role="none">
             <Link 
               to="/create-event" 
-              className={`flex items-center p-2 rounded-md ${isDarkMode ? 'hover:bg-gray-700 hover:bg-blue-800' : 'hover:bg-gradient-to-r from-pink-200 to-purple-100'}`} 
-              onClick={toggleSidebar}
-              role="menuitem"
+              className={`flex items-center p-2 rounded-md 
+                hover:bg-gradient-to-r hover:from-pink-200 hover:to-purple-100 
+                dark:hover:bg-gray-700 dark:hover:bg-opacity-80
+              `} onClick={toggleSidebar} role="menuitem"
             >
               <LucidePlusCircle className="mr-3" size={20} aria-hidden="true" />
               <span>Create Event</span>
+            </Link>
+          </li>
+          <li role="none">
+            <Link 
+              to="/staff" 
+              className={`flex items-center p-2 rounded-md 
+                hover:bg-gradient-to-r hover:from-pink-200 hover:to-purple-100 
+                dark:hover:bg-gray-700 dark:hover:bg-opacity-80
+              `} onClick={toggleSidebar} role="menuitem"
+            >
+              <LucidePlusCircle className="mr-3" size={20} aria-hidden="true" />
+              <span>Staff Dashboard</span>
             </Link>
           </li>
         </ul>

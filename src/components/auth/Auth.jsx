@@ -136,7 +136,7 @@ const Auth = ({ isDarkMode }) => {
       <button
         onClick={signInWithGoogle}
         disabled={loading}
-        className={`bg-pink-100 hover:bg-red-300 flex items-center px-3 py-3 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`bg-customDark2 hover:bg-red-300 dark:hover:bg-blue-800 dark:bg-customBlue flex items-center px-3 py-3 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         <img
           src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
