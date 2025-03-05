@@ -4,6 +4,7 @@ import EditEventModal from '../components/events/EditEventModal';
 import useUserRole from '../hooks/useUserRole';
 import { supabase } from '../../utils/supabase';
 import { Trash2, Edit } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const StaffDashboard = ({ user }) => {
   const [staffEvents, setStaffEvents] = useState([]);
@@ -11,6 +12,7 @@ const StaffDashboard = ({ user }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { role, loading } = useUserRole(user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && role === 'staff') {
@@ -49,7 +51,6 @@ const StaffDashboard = ({ user }) => {
     if (!confirmDelete) return;
 
     try {
-      // First, delete related registrations
       const { error: registrationError } = await supabase
         .from('registrations')
         .delete()
@@ -57,7 +58,6 @@ const StaffDashboard = ({ user }) => {
 
       if (registrationError) throw registrationError;
 
-      // Then delete the event
       const { error } = await supabase
         .from('events')
         .delete()
@@ -65,7 +65,6 @@ const StaffDashboard = ({ user }) => {
 
       if (error) throw error;
 
-      // Refresh events list
       fetchUserEvents();
     } catch (error) {
       console.error('Error deleting event:', error);
@@ -78,12 +77,35 @@ const StaffDashboard = ({ user }) => {
     setIsEditModalOpen(true);
   };
 
+  const handleLoginRedirect = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="space-y-8">
-      {loading && <div>Loading permissions...</div>}
-      {!loading && role !== 'staff' && (
-        <div className="text-center py-8">Staff access required</div>
+      {loading && (
+        <div className="flex justify-center items-center min-h-screen text-xl text-gray-500 dark:text-gray-400 animate-pulse">
+          Loading permissions...
+        </div>
       )}
+      
+      {!loading && role !== 'staff' && (
+        <div className="flex flex-col items-center justify-center h-[70vh] text-center space-y-4">
+          <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-200">
+            Access Restricted
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            You do not have the necessary permissions to view this page.
+          </p>
+          <button
+            onClick={handleLoginRedirect}
+            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Login to Continue
+          </button>
+        </div>
+      )}
+      
       {!loading && role === 'staff' && (
         <>
           <CreateEvent userId={user.id} onEventCreated={fetchUserEvents} />

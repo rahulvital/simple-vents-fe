@@ -158,7 +158,6 @@ const EventsPage = ({ user }) => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden relative">
-        {/* Staff Edit/Delete Buttons */}
         {isStaffCreator && (
           <div className="absolute top-4 right-4 z-10 flex space-x-2">
             <button 
@@ -207,12 +206,9 @@ const EventsPage = ({ user }) => {
               </div>
             )}
           </div>
-
           <div className="prose max-w-none mb-6">
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{event.description}</p>
           </div>
-
-          {/* Registration and Calendar Buttons */}
           <div className="flex space-x-2 mb-6">
             {user ? (
               <>

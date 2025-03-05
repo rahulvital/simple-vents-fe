@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LucideX, LucideHome, LucidePlusCircle } from 'lucide-react';
+import { LucideX, LucideHome, LucideBriefcase } from 'lucide-react';
 
 const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
   return (
@@ -36,25 +36,13 @@ const Sidebar = ({ isOpen, toggleSidebar, isDarkMode }) => {
           </li>
           <li role="none">
             <Link 
-              to="/create-event" 
-              className={`flex items-center p-2 rounded-md 
-                hover:bg-gradient-to-r hover:from-pink-200 hover:to-purple-100 
-                dark:hover:bg-gray-700 dark:hover:bg-opacity-80
-              `} onClick={toggleSidebar} role="menuitem"
-            >
-              <LucidePlusCircle className="mr-3" size={20} aria-hidden="true" />
-              <span>Create Event</span>
-            </Link>
-          </li>
-          <li role="none">
-            <Link 
               to="/staff" 
               className={`flex items-center p-2 rounded-md 
                 hover:bg-gradient-to-r hover:from-pink-200 hover:to-purple-100 
                 dark:hover:bg-gray-700 dark:hover:bg-opacity-80
               `} onClick={toggleSidebar} role="menuitem"
             >
-              <LucidePlusCircle className="mr-3" size={20} aria-hidden="true" />
+              <LucideBriefcase className="mr-3" size={20} aria-hidden="true" />
               <span>Staff Dashboard</span>
             </Link>
           </li>
