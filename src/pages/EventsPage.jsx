@@ -10,12 +10,10 @@ const EventsPage = ({ user }) => {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Registration-related state
   const [isRegistered, setIsRegistered] = useState(false);
   const [spotsLeft, setSpotsLeft] = useState(0);
   const [addedToCalendar, setAddedToCalendar] = useState(false);
 
-  // Reusable button styles
   const filledButtonClass =
     "flex-1 bg-blue-600 text-white py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors";
   const outlinedButtonClass =
@@ -33,7 +31,6 @@ const EventsPage = ({ user }) => {
         console.error('Error fetching event:', error);
       } else {
         setEvent(data);
-        // Assume either a spotsLeft field exists or fall back to capacity.
         setSpotsLeft(data.spotsLeft || data.capacity);
       }
       setLoading(false);
@@ -42,7 +39,6 @@ const EventsPage = ({ user }) => {
     fetchEvent();
   }, [id]);
 
-  // Check registration status once event and user are loaded.
   useEffect(() => {
     if (user && event) {
       const checkRegistration = async () => {

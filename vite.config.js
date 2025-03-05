@@ -4,7 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/simple-vents-fe/',  // Make sure this matches your repo name
+  base: '/simple-vents-fe/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
