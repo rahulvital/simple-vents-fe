@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../utils/supabase';
-import { Calendar, MapPin, User } from 'lucide-react';
+import { Calendar, MapPin, User, Edit, Trash2 } from 'lucide-react';
 import { addToGoogleCalendar } from '../../utils/calendar';
 
 const EventsPage = ({ user }) => {
@@ -9,6 +9,7 @@ const EventsPage = ({ user }) => {
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isStaffCreator, setIsStaffCreator] = useState(false);
   
   const [isRegistered, setIsRegistered] = useState(false);
   const [spotsLeft, setSpotsLeft] = useState(0);
@@ -18,6 +19,8 @@ const EventsPage = ({ user }) => {
     "flex-1 bg-blue-600 text-white py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors";
   const outlinedButtonClass =
     "flex-1 border border-blue-600 text-blue-600 py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-50 transition-colors";
+  const dangerButtonClass =
+    "bg-red-600 text-white py-2 px-4 rounded flex items-center justify-center space-x-2 hover:bg-red-700 transition-colors";
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -29,10 +32,12 @@ const EventsPage = ({ user }) => {
 
       if (error) {
         console.error('Error fetching event:', error);
-      } else {
-        setEvent(data);
-        setSpotsLeft(data.spotsLeft || data.capacity);
+        setLoading(false);
+        return;
       }
+
+      setEvent(data);
+      setSpotsLeft(data.spotsLeft || data.capacity);
       setLoading(false);
     };
 
@@ -41,6 +46,8 @@ const EventsPage = ({ user }) => {
 
   useEffect(() => {
     if (user && event) {
+      setIsStaffCreator(event.created_by === user.id);
+
       const checkRegistration = async () => {
         const { data } = await supabase
           .from('registrations')
@@ -98,6 +105,34 @@ const EventsPage = ({ user }) => {
     }
   };
 
+  const handleDeleteEvent = async () => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this event? This action cannot be undone.');
+    if (confirmDelete) {
+      try {
+        await supabase
+          .from('registrations')
+          .delete()
+          .eq('event_id', event.id);
+
+        const { error } = await supabase
+          .from('events')
+          .delete()
+          .eq('id', event.id);
+
+        if (error) throw error;
+
+        navigate('/events');
+      } catch (error) {
+        console.error('Error deleting event:', error);
+        alert('Failed to delete event. Please try again.');
+      }
+    }
+  };
+
+  const handleEditEvent = () => {
+    navigate(`/events/edit/${event.id}`);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -118,7 +153,27 @@ const EventsPage = ({ user }) => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="bg-white shadow-lg rounded-xl overflow-hidden">
+      <div className="bg-white shadow-lg rounded-xl overflow-hidden relative">
+        {/* Staff Edit/Delete Buttons */}
+        {isStaffCreator && (
+          <div className="absolute top-4 right-4 z-10 flex space-x-2">
+            <button 
+              onClick={handleEditEvent}
+              className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 transition-colors"
+              title="Edit Event"
+            >
+              <Edit size={20} />
+            </button>
+            <button 
+              onClick={handleDeleteEvent}
+              className="bg-red-500 text-white p-3 rounded-full hover:bg-red-600 transition-colors"
+              title="Delete Event"
+            >
+              <Trash2 size={20} />
+            </button>
+          </div>
+        )}
+
         {event.img && (
           <div className="h-96 overflow-hidden">
             <img
@@ -161,17 +216,21 @@ const EventsPage = ({ user }) => {
                   <button
                     onClick={handleRegistration}
                     disabled={spotsLeft <= 0}
-                    className={filledButtonClass}
+                    className={`${filledButtonClass} ${spotsLeft <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
-                    <span>Register Now</span>
+                    <span>{spotsLeft <= 0 ? 'Sold Out' : 'Register Now'}</span>
                   </button>
                 ) : (
                   <>
                     <button onClick={handleUnregister} className={filledButtonClass}>
                       <span>Unregister</span>
                     </button>
-                    <button onClick={handleAddToCalendar} className={filledButtonClass}>
-                      <span>Add to Google Calendar</span>
+                    <button 
+                      onClick={handleAddToCalendar} 
+                      disabled={addedToCalendar}
+                      className={`${filledButtonClass} ${addedToCalendar ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      <span>{addedToCalendar ? 'Added to Calendar' : 'Add to Google Calendar'}</span>
                     </button>
                   </>
                 )}
@@ -185,8 +244,6 @@ const EventsPage = ({ user }) => {
               </button>
             )}
           </div>
-          
-          {/* Optional: Additional details or actions can be added here */}
         </div>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { supabase } from '../../../utils/supabase';
 import { useNavigate } from 'react-router-dom';
+import { Calendar, MapPin, Info } from 'lucide-react';
 
-const CreateEvent = ( {user} ) => {
+const CreateEvent = ({ user, onEventCreated }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
@@ -16,6 +17,11 @@ const CreateEvent = ( {user} ) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const filledButtonClass =
+    "flex-1 bg-blue-600 text-white py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors";
+  const outlinedButtonClass =
+    "flex-1 border border-blue-600 text-blue-600 py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-50 transition-colors";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,8 +38,8 @@ const CreateEvent = ( {user} ) => {
       }
 
       const { data, error: supabaseError } = await supabase
-      .from('events')
-      .insert([{
+        .from('events')
+        .insert([{
           title: formData.title,
           description: formData.description,
           location: formData.location,
@@ -44,15 +50,16 @@ const CreateEvent = ( {user} ) => {
           registrations: []
         }])
         .select();
-        if (supabaseError) throw supabaseError;        
-        navigate(`/staff`);
-      } catch (err) {
-        console.error('Error creating event:', err);
-        setError(err.message || 'Failed to create event');
-      } finally {
-        setLoading(false);
-      }
-    };
+
+      if (supabaseError) throw supabaseError;        
+      navigate(`/staff`);
+    } catch (err) {
+      console.error('Error creating event:', err);
+      setError(err.message || 'Failed to create event');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -62,106 +69,134 @@ const CreateEvent = ( {user} ) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg mb-8 text-black dark:text-white">
-      <h2 className="text-2xl font-bold mb-6">Create New Event</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Event Title</label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-            required
-          />
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="bg-white shadow-lg rounded-xl overflow-hidden">
+        <div className="p-6">
+          <h1 className="text-4xl font-bold text-gray-800 mb-6">Create New Event</h1>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Event Title</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+                placeholder="Enter event title"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="4"
+                required
+                placeholder="Describe your event"
+              />
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                  <MapPin className="w-5 h-5 mr-2 text-green-500" />
+                  Location
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                  placeholder="Event location"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                  <Calendar className="w-5 h-5 mr-2 text-blue-500" />
+                  Date
+                </label>
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                <input
+                  type="time"
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Capacity</label>
+                <input
+                  type="number"
+                  name="capacity"
+                  value={formData.capacity}
+                  onChange={handleChange}
+                  min="1"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+              <input
+                type="url"
+                name="img"
+                value={formData.img}
+                onChange={handleChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Optional: Add an event image URL"
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg flex items-center space-x-2">
+                <Info className="w-5 h-5" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <div className="flex space-x-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className={`${filledButtonClass} ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {loading ? 'Creating Event...' : 'Create Event'}
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/staff')}
+                className={outlinedButtonClass}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-            rows="3"
-            required
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Location</label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Date</label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Time</label>
-            <input
-              type="time"
-              name="time"
-              value={formData.time}
-              onChange={handleChange}
-              className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">Capacity</label>
-            <input
-              type="number"
-              name="capacity"
-              value={formData.capacity}
-              onChange={handleChange}
-              min="1"
-              className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-              required
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Image URL</label>
-          <input
-            type="url"
-            name="img"
-            value={formData.img}
-            onChange={handleChange}
-            className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-            placeholder="https://example.com/image.jpg"
-          />
-        </div>
-
-        {error && <p className="text-red-500 dark:text-red-400">{error}</p>}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? 'Creating Event...' : 'Create Event'}
-        </button>
-      </form>
+      </div>
     </div>
   );
 };
