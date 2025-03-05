@@ -9,20 +9,20 @@ const LoginPage = ({ isDarkMode }) => {
       <StarryBackground isDarkMode={isDarkMode} />
       {!isDarkMode && (
         <img
-          src="/branch-left.svg"
+          src={`${import.meta.env.BASE_URL}branch-left.svg`}
           alt="Left Branch"
           className="absolute top-20 left-0 h-64 w-auto opacity-50 hidden md:block"
         />
       )}
       {!isDarkMode && (
         <img
-          src="/branch-right.svg"
+          src={`${import.meta.env.BASE_URL}branch-right.svg`}
           alt="Right Branch"
           className="absolute top-40 right-0 h-64 w-auto opacity-50 hidden md:block"
         />
       )}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-20 relative top-10">
-        <div className="max-w-md mx-auto">
+        <div className="max-w-md mx-auto dark:text-white text-black">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -53,12 +53,12 @@ const LoginPage = ({ isDarkMode }) => {
         </div>
       </div>
       <img
-        src={isDarkMode ? "/snow-left.svg" : "/hill-left.svg"}
+        src={isDarkMode ? `${import.meta.env.BASE_URL}snow-left.svg` : `${import.meta.env.BASE_URL}hill-left.svg`}
         alt="Left hill"
         className="absolute bottom-0 left-0 h-100 w-auto z-0"
       />
       <img
-        src={isDarkMode ? "/snow-right.svg" : "/hill-right.svg"}
+        src={isDarkMode ? `${import.meta.env.BASE_URL}snow-right.svg` : `${import.meta.env.BASE_URL}hill-right.svg`}
         alt="Right hill"
         className="absolute bottom-0 right-0 h-100 w-auto z-0"
       />

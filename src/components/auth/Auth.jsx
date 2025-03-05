@@ -81,7 +81,7 @@ const Auth = ({ isDarkMode }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `https://rahulvital.github.io/simple-vents-fe/auth/callback`,
+          redirectTo: `${window.location.origin}/simple-vents-fe/auth/callback`,
           scopes: 'https://www.googleapis.com/auth/calendar',
           queryParams: {
             access_type: 'offline',
@@ -136,18 +136,13 @@ const Auth = ({ isDarkMode }) => {
       <button
         onClick={signInWithGoogle}
         disabled={loading}
-        className={`flex items-center px-3 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border ${
-          isDarkMode 
-            ? 'bg-gray-800 text-white hover:bg-blue-800 border-customBlue' 
-            : 'bg-white text-gray-800 hover:bg-gray-50 border-gray-300'
-        } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`bg-pink-100 hover:bg-red-300 flex items-center px-3 py-3 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         <img
           src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
           alt="Google"
           className="w-4 h-4"
         />
-        <span className="ml-2"></span>
       </button>
     </div>
   );

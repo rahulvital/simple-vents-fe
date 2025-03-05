@@ -48,10 +48,10 @@ const App = () => {
           isStaff={user?.user_metadata?.is_staff}
         />
         <main className={`pt-16 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4">
             <Routes>
               <Route path="/" element={<HomePage user={user} />} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/login" element={<LoginPage isDarkMode={isDarkMode} />} />
               <Route path="/staff" element={<StaffDashboard user={user} />} />
               <Route path="/create-event" element={<CreateEvent user={user} />} />
               <Route path="/auth/callback" element={<Callback />} />

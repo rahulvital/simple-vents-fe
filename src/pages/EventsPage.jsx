@@ -1,12 +1,25 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../utils/supabase';
 import { Calendar, MapPin, User } from 'lucide-react';
+import { addToGoogleCalendar } from '../../utils/calendar';
 
 const EventsPage = ({ user }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  // Registration-related state
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [spotsLeft, setSpotsLeft] = useState(0);
+  const [addedToCalendar, setAddedToCalendar] = useState(false);
+
+  // Reusable button styles
+  const filledButtonClass =
+    "flex-1 bg-blue-600 text-white py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-700 transition-colors";
+  const outlinedButtonClass =
+    "flex-1 border border-blue-600 text-blue-600 py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-50 transition-colors";
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -20,12 +33,74 @@ const EventsPage = ({ user }) => {
         console.error('Error fetching event:', error);
       } else {
         setEvent(data);
+        // Assume either a spotsLeft field exists or fall back to capacity.
+        setSpotsLeft(data.spotsLeft || data.capacity);
       }
       setLoading(false);
     };
 
     fetchEvent();
   }, [id]);
+
+  // Check registration status once event and user are loaded.
+  useEffect(() => {
+    if (user && event) {
+      const checkRegistration = async () => {
+        const { data } = await supabase
+          .from('registrations')
+          .select('id')
+          .eq('event_id', event.id)
+          .eq('user_id', user.id);
+        setIsRegistered(data && data.length > 0);
+      };
+
+      checkRegistration();
+    }
+  }, [user, event]);
+
+  const handleRegistration = async () => {
+    if (!user) return;
+    try {
+      const { error } = await supabase
+        .from('registrations')
+        .insert({
+          event_id: event.id,
+          user_id: user.id,
+        });
+      if (error) throw error;
+      setIsRegistered(true);
+      setSpotsLeft((prev) => prev - 1);
+    } catch (error) {
+      console.error('Registration failed:', error.message);
+    }
+  };
+
+  const handleUnregister = async () => {
+    if (!user) return;
+    try {
+      const { error } = await supabase
+        .from('registrations')
+        .delete()
+        .eq('event_id', event.id)
+        .eq('user_id', user.id);
+      if (error) throw error;
+      setIsRegistered(false);
+      setSpotsLeft((prev) => prev + 1);
+    } catch (error) {
+      console.error('Error removing registration:', error.message);
+    }
+  };
+
+  const handleAddToCalendar = async () => {
+    if (!isRegistered) return;
+    try {
+      addToGoogleCalendar(event);
+    } catch (error) {
+      console.error('Calendar integration error:', error);
+    } finally {
+      setAddedToCalendar(true);
+    }
+  };
 
   if (loading) {
     return (
@@ -78,19 +153,44 @@ const EventsPage = ({ user }) => {
             )}
           </div>
 
-          <div className="prose max-w-none">
+          <div className="prose max-w-none mb-6">
             <p className="text-gray-700 leading-relaxed">{event.description}</p>
           </div>
 
-          {/* Optional: Add a subtle bottom border */}
-          <div className="border-t mt-6 pt-4 text-center">
-            <button 
-              className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors"
-              onClick={() => {/* Add event registration or more details logic */}}
-            >
-              More Details
-            </button>
+          {/* Registration and Calendar Buttons */}
+          <div className="flex space-x-2 mb-6">
+            {user ? (
+              <>
+                {!isRegistered ? (
+                  <button
+                    onClick={handleRegistration}
+                    disabled={spotsLeft <= 0}
+                    className={filledButtonClass}
+                  >
+                    <span>Register Now</span>
+                  </button>
+                ) : (
+                  <>
+                    <button onClick={handleUnregister} className={filledButtonClass}>
+                      <span>Unregister</span>
+                    </button>
+                    <button onClick={handleAddToCalendar} className={filledButtonClass}>
+                      <span>Add to Google Calendar</span>
+                    </button>
+                  </>
+                )}
+              </>
+            ) : (
+              <button
+                onClick={() => navigate('/login')}
+                className={filledButtonClass}
+              >
+                <span>Login to Register</span>
+              </button>
+            )}
           </div>
+          
+          {/* Optional: Additional details or actions can be added here */}
         </div>
       </div>
     </div>

@@ -25,6 +25,12 @@ const CreateEvent = ( {user} ) => {
     try {
       const eventDate = new Date(`${formData.date}T${formData.time}`);
       
+      if (eventDate <= new Date()) {
+        setError('Event date and time must be in the future.');
+        setLoading(false);
+        return;
+      }
+
       const { data, error: supabaseError } = await supabase
       .from('events')
       .insert([{
