@@ -16,6 +16,8 @@ const EventCard = ({ event, user, onLogin }) => {
     "flex-1 border border-blue-600 text-blue-600 py-2 rounded flex items-center justify-center space-x-2 hover:bg-blue-50 transition-colors dark:border-blue-500 dark:text-blue-500 dark:hover:bg-blue-950";
   const disabledButtonClass =
     "flex-1 bg-gray-300 text-gray-500 py-2 rounded flex items-center justify-center space-x-2 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400";
+  const dangerButtonClass =
+    "bg-red-600 text-white py-2 px-4 rounded flex items-center justify-center space-x-2 hover:bg-red-700 transition-colors";
 
   useEffect(() => {
     const checkRegistration = async () => {
