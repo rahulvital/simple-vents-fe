@@ -128,7 +128,7 @@ const EventCard = ({ event, user, onLogin }) => {
               </button>
             ) : (
               <>
-                <button onClick={handleUnregister} className={filledButtonClass}>
+                <button onClick={handleUnregister} className={dangerButtonClass}>
                   <span>Unregister</span>
                 </button>
                 <button 
