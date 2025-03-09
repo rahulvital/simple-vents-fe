@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../utils/supabase';
 import { Calendar, MapPin, User, Edit, Trash2 } from 'lucide-react';
 import { addToGoogleCalendar } from '../../utils/calendar';
+import Toast from '../components/common/Toast';
+import { showSuccess, showError } from '../components/common/Notification';
 
 const EventsPage = ({ user }) => {
   const { id } = useParams();
@@ -33,6 +35,7 @@ const EventsPage = ({ user }) => {
       if (error) {
         console.error('Error fetching event:', error);
         setLoading(false);
+        showError('Error loading event details');
         return;
       }
 
@@ -73,8 +76,10 @@ const EventsPage = ({ user }) => {
       if (error) throw error;
       setIsRegistered(true);
       setSpotsLeft((prev) => prev - 1);
+      showSuccess('Successfully registered for event');
     } catch (error) {
       console.error('Registration failed:', error.message);
+      showError('Registration failed');
     }
   };
 
@@ -89,25 +94,25 @@ const EventsPage = ({ user }) => {
       if (error) throw error;
       setIsRegistered(false);
       setSpotsLeft((prev) => prev + 1);
+      showSuccess('Successfully unregistered from event');
     } catch (error) {
       console.error('Error removing registration:', error.message);
+      showError('Failed to unregister from event');
     }
   };
 
   const handleAddToCalendar = async () => {
     if (!isRegistered) return;
     try {
-      addToGoogleCalendar(event);
+      await addToGoogleCalendar(event);
+      setAddedToCalendar(true);
     } catch (error) {
       console.error('Calendar integration error:', error);
-    } finally {
-      setAddedToCalendar(true);
     }
   };
 
   const handleDeleteEvent = async () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this event? This action cannot be undone.');
-    if (confirmDelete) {
+    if (window.confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
       try {
         await supabase
           .from('registrations')
@@ -121,10 +126,11 @@ const EventsPage = ({ user }) => {
 
         if (error) throw error;
 
+        showSuccess('Event deleted successfully');
         navigate('/events');
       } catch (error) {
         console.error('Error deleting event:', error);
-        alert('Failed to delete event. Please try again.');
+        showError('Failed to delete event');
       }
     }
   };
@@ -157,6 +163,7 @@ const EventsPage = ({ user }) => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <Toast />
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden relative">
         {isStaffCreator && (
           <div className="absolute top-4 right-4 z-10 flex space-x-2">

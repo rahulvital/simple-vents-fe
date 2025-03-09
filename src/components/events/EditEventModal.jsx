@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../utils/supabase';
+import { showSuccess, showError } from '../common/Notification';
 
 const EditEventModal = ({ event, isOpen, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -49,11 +50,12 @@ const EditEventModal = ({ event, isOpen, onClose, onUpdate }) => {
 
       if (error) throw error;
       
+      showSuccess('Event updated successfully');
       onUpdate();
       onClose();
     } catch (error) {
       console.error('Error updating event:', error);
-      alert('Failed to update event');
+      showError('Failed to update event');
     }
   };
 

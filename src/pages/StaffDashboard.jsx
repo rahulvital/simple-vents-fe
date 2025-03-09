@@ -5,6 +5,8 @@ import useUserRole from '../hooks/useUserRole';
 import { supabase } from '../../utils/supabase';
 import { Trash2, Edit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import Toast from '../components/common/Toast';
+import { showSuccess, showError } from '../components/common/Notification';
 
 const StaffDashboard = ({ user }) => {
   const [staffEvents, setStaffEvents] = useState([]);
@@ -30,6 +32,7 @@ const StaffDashboard = ({ user }) => {
       if (error) {
         console.error('Detailed fetch error:', error);
         setError(error.message || 'Failed to fetch your events');
+        showError('Failed to fetch your events');
         return;
       }
 
@@ -42,33 +45,33 @@ const StaffDashboard = ({ user }) => {
     } catch (error) {
       console.error('Unexpected events fetch error:', error);
       setError('An unexpected error occurred while fetching events');
+      showError('An unexpected error occurred');
     }
   };
 
   const handleDeleteEvent = async (eventId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this event? This action cannot be undone.');
-    
-    if (!confirmDelete) return;
+    if (window.confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+      try {
+        const { error: registrationError } = await supabase
+          .from('registrations')
+          .delete()
+          .eq('event_id', eventId);
 
-    try {
-      const { error: registrationError } = await supabase
-        .from('registrations')
-        .delete()
-        .eq('event_id', eventId);
+        if (registrationError) throw registrationError;
 
-      if (registrationError) throw registrationError;
+        const { error } = await supabase
+          .from('events')
+          .delete()
+          .eq('id', eventId);
 
-      const { error } = await supabase
-        .from('events')
-        .delete()
-        .eq('id', eventId);
+        if (error) throw error;
 
-      if (error) throw error;
-
-      fetchUserEvents();
-    } catch (error) {
-      console.error('Error deleting event:', error);
-      alert('Failed to delete event');
+        showSuccess('Event deleted successfully');
+        fetchUserEvents();
+      } catch (error) {
+        console.error('Error deleting event:', error);
+        showError('Failed to delete event');
+      }
     }
   };
 
@@ -83,6 +86,7 @@ const StaffDashboard = ({ user }) => {
 
   return (
     <div className="space-y-8">
+      <Toast />
       {loading && (
         <div className="flex justify-center items-center min-h-screen text-xl text-gray-500 dark:text-gray-400 animate-pulse">
           Loading permissions...

@@ -19,9 +19,14 @@ export default {
           '0%, 100%': { opacity: 1 },
           '50%': { opacity: 0.3 },
         },
+        slideIn: {
+          '0%': { transform: 'translateX(100%)', opacity: 0 },
+          '100%': { transform: 'translateX(0)', opacity: 1 },
+        },  
       },
       animation: {
         twinkle: 'twinkle 2s infinite',
+        slideIn: 'slideIn 0.3s ease forwards',
       },
     },
   },
