@@ -20,6 +20,9 @@ In the current version, authorized Google users can also:
 Please do watch this youtube video to see the application in action!
 https://youtu.be/hOxKwtkMwQc
 
+A secondary video seeing the staff being able to edit and delete events from the calendar:
+https://youtu.be/Jdo6MZgNhNg
+
 
 # Tech Stack
 
